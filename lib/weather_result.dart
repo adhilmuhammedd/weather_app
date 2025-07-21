@@ -41,23 +41,28 @@ class _WeatherResultScreenState extends State<WeatherResultScreen> {
   }
 
   void updateUI(dynamic Weatherdata) {
-    setState(() {
-      if (Weatherdata == null) {
-        temprature = 0;
-        weatherMassage = 'Unable to get data from server';
-        cityName = 'An error occurred';
-        weatherIcon = '';
-        return;
-      }
-      cityName = Weatherdata['name'];
-      weatherConditaion = Weatherdata['weather'][0]['main'];
-      double temp = Weatherdata['main']['temp'];
-      temprature = temp.toInt();
-      weatherConditaionCode = Weatherdata['weather'][0]['id'];
-      weatherIcon = weatherModal.getWeatherIcon(weatherConditaionCode);
-      weatherMassage = weatherModal.getMassage(temprature);
-    });
-  }
+  setState(() {
+    if (Weatherdata == null) {
+      temprature = 0;
+      weatherMassage = 'Unable to get data from server';
+      cityName = 'An error occurred';
+      weatherIcon = '';
+      return;
+    }
+
+    cityName = Weatherdata['name'];
+    weatherConditaion = Weatherdata['weather'][0]['main'];
+    double temp = Weatherdata['main']['temp'];
+    temprature = temp.toInt();
+
+    weatherConditaionCode = Weatherdata['weather'][0]['id'];
+    print("Weather condition code: $weatherConditaionCode"); // ← Add this line
+
+    weatherIcon = weatherModal.getWeatherIcon(weatherConditaionCode);
+    weatherMassage = weatherModal.getMassage(temprature);
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +162,7 @@ class _WeatherResultScreenState extends State<WeatherResultScreen> {
                 ),
               ),
               Container(
-                height: 95.0,
+                height: 80.0,
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -173,7 +178,10 @@ class _WeatherResultScreenState extends State<WeatherResultScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 8),
+                margin: EdgeInsets.only(top: 8, bottom: 8, left: 90, right: 90),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(context,

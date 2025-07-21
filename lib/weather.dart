@@ -5,6 +5,7 @@ const apiKey = 'ffb344d524f47e597e98b99877440579';
 const openWeatherMapUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 class WeatherModal {
+  // Get weather using latitude and longitude
   Future<dynamic> getLocationWeather({
     required double latitude,
     required double longitude,
@@ -16,25 +17,35 @@ class WeatherModal {
     return weatherData;
   }
 
-  String getWeatherIcon(int weatherConditionCode) {
-    if (weatherConditionCode < 300) {
-      return '🌩';
-    } else if (weatherConditionCode < 400) {
-      return '🌧';
-    } else if (weatherConditionCode < 600) {
-      return '☔️';
-    } else if (weatherConditionCode < 700) {
-      return '☃️';
-    } else if (weatherConditionCode < 800) {
-      return '☁️';
-    } else if (weatherConditionCode == 800) {
-      return '☀️';
-    } else if (weatherConditionCode < 804) {
-      return '☁️';
-    } else {
-      return '🤷‍♂️';
-    }
+  // ✅ NEW: Get weather by city name
+  Future<dynamic> getCityWeather(String cityName) async {
+    Networking networkBrain = Networking(
+      '$openWeatherMapUrl?q=$cityName&appid=$apiKey&units=metric',
+    );
+    var weatherData = await networkBrain.getData();
+    return weatherData;
   }
+
+  String getWeatherIcon(int weatherConditionCode) {
+  if (weatherConditionCode < 300) {
+    return '🌩'; // Thunderstorm
+  } else if (weatherConditionCode < 400) {
+    return '🌧'; // Drizzle
+  } else if (weatherConditionCode < 600) {
+    return '☔️'; // Rain
+  } else if (weatherConditionCode < 700) {
+    return '☃️'; // Snow
+  } else if (weatherConditionCode < 800) {
+    return '🌫'; // Atmosphere (mist, smoke, etc.)
+  } else if (weatherConditionCode == 800) {
+    return '☀️'; // Clear
+  } else if (weatherConditionCode <= 804) {
+    return '☁️'; // Clouds
+  } else {
+    return '❓'; // Unknown
+  }
+}
+
 
   String getMassage(int temperature) {
     if (temperature > 25) {

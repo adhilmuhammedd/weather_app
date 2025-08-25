@@ -8,7 +8,7 @@ class Cityscreen extends StatefulWidget {
 }
 
 class _CityscreenState extends State<Cityscreen> {
-  String? cityName;
+  String? cityName; 
   WeatherModal weatherModal = WeatherModal();
 
   @override
